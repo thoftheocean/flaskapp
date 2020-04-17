@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>复制粘贴</title>
+</head>
+<body>
+<script src="https://cdn.bootcss.com/clipboard.js/1.7.1/clipboard.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<div><span id="btn" data-clipboard-text="baidu">复制</span></div>
+<div id="show" style="display: none;">已复制</div>
+<script>
+	var btn=document.getElementById('btn');
+	var clipboard=new Clipboard(btn);
+	clipboard.on('success', function(e){
+		$('#show').slideDown().delay(1500).slideUp(300);
+		console.log(e);
+	});
+	clipboard.on('error', function(e){
+		$('#show').slideDown().delay(1500).slideUp(300);
+		console.log(e);
+	});
+</script>
+</body>
+ var btn = document.getElementById('copy');
+    var clipboard = new Clipboard(btn);
+    clipboard.on('success', function (e) {
+        // $("#copy").append('复制成功');
+        alert('复制成功');
+        $('#show').slideDown().delay(1500).slideUp(300);
+        console.log(e);
+    });
+    clipboard.on('error', function (e) {
+        alert('复制失败');
+    });
