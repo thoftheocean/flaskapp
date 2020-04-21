@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes"/>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdn.bootcss.com/clipboard.js/1.7.1/clipboard.min.js"></script>
+    <title>Title</title>
+</head>
+<style type="text/css">
+    body {
+        background: antiquewhite;
+        margin: 0;
+    }
+
+    #box {
+        padding-top: 20px;
+        background: lightblue;
+        margin: auto;
+        height: 450px;
+        width: 400px;
+        border: 5px;
+    }
+
+    textarea {
+        height: 100px;
+        width: 399px;
+        padding: 0;
+    }
+
+    h2 {
+        margin: auto;
+        width: 200px;
+    }
+
+    #submit, button {
+        margin: auto 8px;
+        width: 80px;
+    }
+</style>
+<body>
+
+<div id="box">
+    <h2>音频地址获取器</h2></br>
+    <span>选择应用：</span>
+    <select id="apps">
+        <option value="wy">网易云音乐</option>
+    </select>
+    </br></br>
+    <span>分享地址：</span></br>
+    <textarea id="share_url"></textarea>
+
+    <span>视频地址：</span></br>
+    <textarea id="video_url"></textarea>
+    <div>
+        <button id="copy" data-clipboard-text="">复制</button>
+        <button id="submit">提交</button>
+        <button id="delete">清空</button>
+        <a><button>首页</button></a>
+    </div>
+</div>
+</body>
+<script type='text/javascript'>
+    $('#submit').click(function () {
+        var app_name = $("#apps option:selected").val();
+        var url = $("#share_url").val();
+        var data = {'app': app_name, 'url': url};
+        $.ajax({
+            type: 'POST',
+            url: "/music",
+            data: data,
+            dataType: 'json',
+            success: function (data) {
+                $("#video_url").val(data.url);
+                $("#copy").attr('data-clipboard-text', data.url)
+            },
+            error: function () {
+                alert('error')
+            }
+        });
+    });
+
+    $('#delete').click('delete', function () {
+        $("#share_url").val('');
+        $("#video_url").val('');
+    });
+
+    $('#copy').click('copy', function () {
+        var clipboard = new Clipboard(this);
+        clipboard.on('success', function (e) {
+            // $("#copy").append('复制成功');
+            alert('复制成功');
+            $('#show').slideDown().delay(1500).slideUp(300);
+            console.log(e);
+        });
+        clipboard.on('error', function (e) {
+            alert('复制失败');
+        });
+    });
+
+</script>
+</html>
